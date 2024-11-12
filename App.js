@@ -1,45 +1,87 @@
-import { ImageBackground, SafeAreaView, StyleSheet, View } from "react-native";
+import { ImageBackground, SafeAreaView, StyleSheet, unstable_batchedUpdates, View } from "react-native";
 import StartingScreen from "./screens/StartingScreen";
 import { LinearGradient } from "expo-linear-gradient";
-import backgoundImage from "./assets/images/backgroundImageDice.jpg";
-import { useState } from "react";
+import backgroundImage from "./assets/images/backgroundImageDice.jpg";
+import { useCallback, useEffect, useState } from "react";
 import GameScreen from "./screens/GameScreen";
 import Colors from "./constants/Colors";
 import GameOverScreen from "./screens/GameOverScreen";
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [userNumber, setUserNumber] = useState(null);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isAppReady, setIsAppReady] = useState(false);
 
   const handlePickedNumber = (pickedNumber) => {
     setUserNumber(pickedNumber);
     setIsGameOver(false);
   };
 
-  const handleGameOver = () =>{
-    setIsGameOver(true);
+
+  const [fontsLoaded] = useFonts({
+    'open-sans': require('./assets/fonts/open-sans.regular.ttf'),
+    'open-sans-Semibold': require('./assets/fonts/open-sans.semibold.ttf'),
+    'open-sans-bold': require('./assets/fonts/open-sans.bold.ttf'),
+  });
+
+
+  useEffect(() => {
+    const prepare = async () => {
+      try {
+        if (fontsLoaded) {
+          setIsAppReady(true);
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+    };
+    prepare();
+  }, [fontsLoaded]);
+
+
+  const onLayoutRootView = useCallback(async () => {
+    if (isAppReady) {
+      setTimeout(async () => {
+        await SplashScreen.hideAsync();
+      }, 500);
+    }
+  }, [isAppReady]);
+
+
+  if (!isAppReady) {
+    return null;
   }
 
-  let screen = <StartingScreen  getPickedNumber={handlePickedNumber}/>;
 
-  if(userNumber){
-    screen = <GameScreen userNumber={userNumber} onGameOver={handleGameOver} />;
+  let screen = <StartingScreen getPickedNumber={handlePickedNumber} />;
+
+  if (userNumber) {
+    screen = <GameScreen userNumber={userNumber} onGameOver={() => setIsGameOver(true)} />;
   }
 
-  if(isGameOver){
-    screen = <GameOverScreen/>
+  if (isGameOver) {
+    screen = <GameOverScreen />;
+  }
+
+  const handleRestartGame = () =>{
+    setUserNumber(null);
   }
 
   return (
     <LinearGradient colors={["purple", Colors.primaryColor]} style={styles.rootContainer}>
       <ImageBackground
-        source={backgoundImage}
+        source={backgroundImage}
         resizeMode="cover"
         style={styles.rootContainer}
-        imageStyle={styles.backgoundImage}
+        imageStyle={styles.backgroundImage}
       >
-        <SafeAreaView  style={styles.rootContainer}>
-         {screen}
+        <SafeAreaView style={styles.rootContainer} onLayout={onLayoutRootView}>
+          {screen}
         </SafeAreaView>
       </ImageBackground>
     </LinearGradient>
@@ -50,7 +92,7 @@ const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
   },
-  backgoundImage: {
+  backgroundImage: {
     opacity: 0.2,
   },
 });

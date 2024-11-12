@@ -14,11 +14,15 @@ const styles = StyleSheet.create({
         padding:14,
         borderWidth:2,
         borderColor:Colors.primaryColor,
-        marginVertical:10
+        marginVertical:10,
+        marginHorizontal:'auto',
+        maxWidth:100,
+        width:'100%'
     },
     innerText:{
         textAlign:'center',
         fontSize:30,
+        fontFamily:'open-sans-bold',
         color:Colors.primaryColor
     }
 })

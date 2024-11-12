@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   questionText: {
     color:Colors.secodaryColor,
     fontSize: 18,
-    fontWeight:'bold'
+    fontFamily:'open-sans-bold'
   },
 });
 

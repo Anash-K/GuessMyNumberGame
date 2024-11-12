@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         color: Colors.primaryColor,
         fontSize: 25,
         textAlign:'center',
-        fontWeight:'bold'
+        fontFamily:'open-sans-bold'
     }
 });
 
