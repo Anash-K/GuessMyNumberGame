@@ -1,4 +1,4 @@
-import { ImageBackground, SafeAreaView, StyleSheet, unstable_batchedUpdates, View } from "react-native";
+import { ImageBackground, SafeAreaView, StyleSheet, unstable_batchedUpdates, View , Dimensions } from "react-native";
 import StartingScreen from "./screens/StartingScreen";
 import { LinearGradient } from "expo-linear-gradient";
 import backgroundImage from "./assets/images/backgroundImageDice.jpg";

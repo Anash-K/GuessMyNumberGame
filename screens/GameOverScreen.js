@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View ,Dimensions } from "react-native";
 import Title from "../components/UI/Title";
 import WinImage from "../assets/images/winner_Image.jpg";
 import Colors from "../constants/Colors";
@@ -24,6 +24,9 @@ const GameOverScreen = ({onGameRestart,rounds,userNumber}) => {
   );
 };
 
+let ScreenSize = Dimensions.get('window').width;
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -33,8 +36,8 @@ const styles = StyleSheet.create({
     gap: 0,
   },
   imageContainer: {
-    width: 300,
-    height: 300,
+    width: ScreenSize < 380 ? 200 : 300,
+    height:ScreenSize < 380 ? 200 : 300,
     borderRadius: 150,
     overflow: "hidden",
     borderColor: Colors.secodaryColor,

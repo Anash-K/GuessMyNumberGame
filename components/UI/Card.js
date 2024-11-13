@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         elevation: 12,
         shadowColor: "black",
+        marginVertical:14,
     
         // iOS Shadow
         shadowColor: "#000",
