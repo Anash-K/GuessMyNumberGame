@@ -16,6 +16,8 @@ export default function App() {
   const [userNumber, setUserNumber] = useState(null);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isAppReady, setIsAppReady] = useState(false);
+  const [guessRound,setGuessRound] = useState(0);
+  
 
   const handlePickedNumber = (pickedNumber) => {
     setUserNumber(pickedNumber);
@@ -55,22 +57,33 @@ export default function App() {
 
   if (!isAppReady) {
     return null;
+  };
+
+  const handleRestartGame = () =>{
+    setUserNumber(null);
+    setIsGameOver(false);
+    screen = <StartingScreen getPickedNumber={handlePickedNumber} />;
+  };
+
+  const handleGameOver = (rounds) =>{
+    if(rounds){
+      setIsGameOver(true);
+      setGuessRound(rounds+1);
+    }
   }
+
 
 
   let screen = <StartingScreen getPickedNumber={handlePickedNumber} />;
 
   if (userNumber) {
-    screen = <GameScreen userNumber={userNumber} onGameOver={() => setIsGameOver(true)} />;
+    screen = <GameScreen userNumber={userNumber}  onGameOver={handleGameOver} />;
   }
 
   if (isGameOver) {
-    screen = <GameOverScreen />;
+    screen = <GameOverScreen onGameRestart={handleRestartGame} rounds={guessRound}  userNumber={userNumber} />;
   }
 
-  const handleRestartGame = () =>{
-    setUserNumber(null);
-  }
 
   return (
     <LinearGradient colors={["purple", Colors.primaryColor]} style={styles.rootContainer}>
