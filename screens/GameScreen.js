@@ -4,6 +4,7 @@ import {
   Pressable,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
 } from "react-native";
 import Title from "../components/UI/Title";
@@ -28,6 +29,8 @@ const guessRateBetween = (min, max, exclude) => {
 const GameScreen = ({ userNumber, onGameOver }) => {
   let minGuessValue = 1;
   let maxGuessValue = 100;
+
+  const {width , height} = useWindowDimensions();
 
   const initialGuess = guessRateBetween(
     minGuessValue,
@@ -72,10 +75,8 @@ const GameScreen = ({ userNumber, onGameOver }) => {
 
   const roundsLength = rounds.length;
 
-  return (
-    <View style={styles.container}>
-      <Title title={"Opponent's Guess"} />
-      <NumericContainer>{currentNumber}</NumericContainer>
+  const portaibleContent = (
+    <>
       <Card>
         <InstructionText style={styles.questionText}>
           Higher or Lower ?
@@ -89,6 +90,32 @@ const GameScreen = ({ userNumber, onGameOver }) => {
           </PrimaryButton>
         </View>
       </Card>
+    </>
+  );
+
+  const landscapeContent = (
+    <>
+      <View style={styles.landscape}>
+        <PrimaryButton onPress={handleNextGuess.bind(this, "lower")}>
+          Higher
+        </PrimaryButton>
+        <InstructionText style={styles.questionText}>
+          Higher or Lower ?
+        </InstructionText>
+        <PrimaryButton onPress={handleNextGuess.bind(this, "higher")}>
+          Lower
+        </PrimaryButton>
+      </View>
+    </>
+  );
+
+  let content = height < 400 ? landscapeContent : portaibleContent;
+
+  return (
+    <View style={styles.container}>
+      <Title title={"Opponent's Guess"} />
+      <NumericContainer>{currentNumber}</NumericContainer>
+      {content}
       <View style={styles.listContainer}>
         <FlatList
           data={rounds}
@@ -127,8 +154,12 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     marginVertical: 15,
-    flex:1
-  },
+    flex: 1,
+  },landscape:{
+    flexDirection: 'row',
+    justifyContent:'center',
+    columnGap:15
+  }
 });
 
 export default GameScreen;

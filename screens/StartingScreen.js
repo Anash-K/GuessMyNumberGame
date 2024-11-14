@@ -43,6 +43,9 @@ const StartingScreen = ({ getPickedNumber }) => {
 
   let marginTopDistance = height < 400 ? 30 : 100;
 
+  let content = <>
+  </>
+
   return (
     <ScrollView style={styles.rootContainer}>
       <KeyboardAvoidingView style={styles.rootContainer}>
